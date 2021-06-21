@@ -1,10 +1,6 @@
 #include <cmath>
-#include <string>
+#include <random>
 #include <vector>
-#include <sstream>
-#include <cstdio>
-#include <iostream>
-#include <utility>
 #include <algorithm>
 #include "src/main.hxx"
 
@@ -13,56 +9,45 @@ using namespace std;
 
 
 
-void runExptBatch(const string& data, bool show, int batch, int skip) {
-  DiGraphSorted<> x1;
-  DiGraphUnsorted<> x2;
-  stringstream s1(data);
-  stringstream s2(data);
-  vector<int> ks1, ks2;
-  bool read1, read2;
-  float t1, t2;
+void runExpt(int N) {
+  int repeat = 5000000;
+  vector<int> x(N);
+  vector<int> vs(repeat);
+  int M = int(sqrt(N));
+  random_device dev;
+  default_random_engine rnd(dev());
+  uniform_int_distribution<> dis(0, M);
 
-  while (true) {
-    t1 = measureDuration([&] { read1 = readSnapTemporal(x1, s1, batch); });
-    t2 = measureDuration([&] { read2 = readSnapTemporal(x2, s2, batch); });
-    print(x1); printf(" [%09.3f ms] readSnapTemporal [sorted]\n", t1);
-    print(x2); printf(" [%09.3f ms] readSnapTemporal [unsorted]\n", t2);
-    if (!read1 || !read2) break;
-    ks1 = vertices(x1);
-    ks2 = vertices(x2);
-    DiGraphSorted<int> xt1;
-    DiGraphUnsorted<int> xt2;
-    t1 = measureDuration([&] { transposeWithDegree(xt1, x1); });
-    t2 = measureDuration([&] { transposeWithDegree(xt2, x2); });
-    print(x1); printf(" [%09.3f ms] transposeWithDegree [sorted]\n", t1);
-    print(x2); printf(" [%09.3f ms] transposeWithDegree [unsorted]\n", t2);
+  // Generate sorted random numbers.
+  for (int i=0; i<N; i++)
+    x[i] = dis(rnd);
+  sort(x.begin(), x.end());
 
-    // Skip some edges (to speed up execution)
-    if (skip) {
-      if (!readSnapTemporal(x1, s1, skip)) break;
-      if (!readSnapTemporal(x2, s2, skip)) break;
-    }
-  }
-}
+  // Generate search values.
+  for (int i=0; i<repeat; i++)
+    vs[i] = dis(rnd);
 
+  // Perform linear search.
+  int i1 = 0, i2 = 0;
+  float t1 = measureDuration([&] {
+    for (int i=0; i<repeat; i++)
+      i1 += findEqIndex(x, vs[i]);
+  });
 
-void runExpt(const string& data, bool show) {
-  int M = countLines(data), steps = 100;
-  printf("Temporal edges: %d\n\n", M);
-  for (int batch=1000, i=0; batch<M; batch*=i&1? 2:5, i++) {
-    int skip = max(M/steps - batch, 0);
-    printf("# Batch size %.0e\n", (double) batch);
-    runExptBatch(data, show, batch, skip);
-    printf("\n");
-  }
+  // Perform binary search.
+  float t2 = measureDuration([&] {
+    for (int i=0; i<repeat; i++)
+      i2 += lowerBoundEqIndex(x, vs[i]);
+  });
+
+  printf("{%d elems.} [%09.3f ms; %d err.] linearSearch\n", N, t1, 0);
+  printf("{%d elems.} [%09.3f ms; %d err.] binarySearch\n", N, t2, abs(i1-i2));
 }
 
 
 int main(int argc, char **argv) {
-  char *file = argv[1];
-  bool  show = argc > 2;
-  printf("Using graph %s ...\n", file);
-  string d = readFile(file);
-  runExpt(d, show);
+  for (int N=10; N<=1000; N+=10)
+    runExpt(N);
+  printf("\n");
   return 0;
 }

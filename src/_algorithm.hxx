@@ -27,6 +27,11 @@ auto find(const J& x, const T& v) {
 
 template <class J, class T>
 int findIndex(const J& x, const T& v) {
+  return find(x.begin(), x.end(), v) - x.begin();
+}
+
+template <class J, class T>
+int findEqIndex(const J& x, const T& v) {
   auto i = find(x.begin(), x.end(), v);
   return i==x.end()? -1 : i-x.begin();
 }
@@ -44,8 +49,13 @@ auto lowerBound(const J& x, const T& v) {
 
 template <class J, class T>
 auto lowerBoundIndex(const J& x, const T& v) {
+  return lower_bound(x.begin(), x.end(), v) - x.begin();
+}
+
+template <class J, class T>
+auto lowerBoundEqIndex(const J& x, const T& v) {
   auto i = lower_bound(x.begin(), x.end(), v);
-  return i==x.end()? -1 : i-x.begin();
+  return i==x.end() || *i!=v? -1 : i-x.begin();
 }
 
 
