@@ -40,6 +40,7 @@ function writeCsv(pth, rows) {
 // -----
 
 function readLogLine(ln, data, state) {
+  if (!data.has(state)) data.set(state, []);
   if (RRESLT.test(ln)) {
     var [, elements, time, error, technique] = RRESLT.exec(ln);
     data.get(state).push({
