@@ -4,8 +4,12 @@ Both approaches were attempted on a no. of *elements* ranging from `10` to
 `1000`. For each no. of elements a random `int` list of that size was
 generated, and sorted. `5 million` random numbers were searched in the list
 with each approach, and the total time taken was measured. **Binary search**
-is faster than **linear search** when the sorted list has
-**atleast 120 elements**.
+is faster than **linear search** when the sorted list has **atleast 120 elements**.
+Unfortunately, performing a **hybrid search** (linear search for few elements,
+and binary search for many elements) does not help. Maybe this is because of
+the added conditional switch? A *naive* implementation of hybrid search also
+performs worse, indicating `std::lower_bound` has some additional optimizations.
+Results for *hybrid search* are not included here.
 
 All outputs are saved in [out](out/) and a small part of the output is listed
 here. Some [charts] are also included below, generated from [sheets].
