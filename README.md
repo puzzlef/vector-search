@@ -39,6 +39,8 @@ $ ./a.out
 <br>
 
 [![](https://i.imgur.com/4DnzoYb.jpg)](https://www.youtube.com/watch?v=SjIliNbBDuQ)
+[![DOI](https://zenodo.org/badge/378992466.svg)](https://zenodo.org/badge/latestdoi/378992466)
+
 
 [charts]: https://photos.app.goo.gl/1YgKDCmtBY1Fp244A
 [sheets]: https://docs.google.com/spreadsheets/d/1jhwk2JLRFZUGhxv_hZrpAdP3UPxqpNfH1Rmg-MPGdmc/edit?usp=sharing
