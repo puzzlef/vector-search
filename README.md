@@ -30,7 +30,7 @@ additional optimizations. Results for *hybrid search* are not included here.
 [![](https://i.imgur.com/4DnzoYb.jpg)](https://www.youtube.com/watch?v=SjIliNbBDuQ)
 [![ORG](https://img.shields.io/badge/org-puzzlef-green?logo=Org)](https://puzzlef.github.io)
 [![DOI](https://zenodo.org/badge/378992466.svg)](https://zenodo.org/badge/latestdoi/378992466)
-
+![](https://ga-beacon.deno.dev/G-KD28SG54JQ:hbAybl6nQFOtmVxW4if3xw/github.com/puzzlef/vector-search)
 
 [charts]: https://photos.app.goo.gl/1YgKDCmtBY1Fp244A
 [sheets]: https://docs.google.com/spreadsheets/d/1jhwk2JLRFZUGhxv_hZrpAdP3UPxqpNfH1Rmg-MPGdmc/edit?usp=sharing
